@@ -104,38 +104,48 @@ def load_all_events():
     all_events = []
     after = None
     page = 1
-    
+    today = datetime.now()
+
     print(f"🔄 Chargement des événements de Lille...")
     date_min, date_max = get_date_range()
     print(f"📅 Période : {date_min} → {date_max}")
-    
+
     while len(all_events) < OPENAGENDA_MAX_EVENTS:
         print(f"📄 Page {page}...")
-        
+
         data = fetch_events(size=100, after=after)
         events = data.get("events", [])
-        
+
         if not events:
             print("✅ Plus d'événements disponibles.")
             break
-        
-        # Extraire les données utiles
+
         for event in events:
             extracted = extract_event_data(event)
-            # Garder uniquement les événements avec titre et description
             if extracted["title"] and extracted["description"]:
-                all_events.append(extracted)
-        
+                # ✅ Filtrer les événements dont la date_debut est dans le passé
+                date_debut_str = extracted.get("date_debut", "")
+                if date_debut_str:
+                    try:
+                        date_debut = datetime.fromisoformat(
+                            date_debut_str.replace('Z', '+00:00')
+                        ).replace(tzinfo=None)
+                        if date_debut >= today:
+                            all_events.append(extracted)
+                    except ValueError:
+                        all_events.append(extracted)
+                else:
+                    all_events.append(extracted)
+
         print(f"   → {len(all_events)} événements récupérés au total")
-        
-        # Pagination
+
         after = data.get("after")
         if not after:
             print("✅ Fin de la pagination.")
             break
-        
+
         page += 1
-    
+
     return all_events
 
 def save_events(events):
