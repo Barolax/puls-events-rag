@@ -40,7 +40,7 @@ MEMORY_WINDOW_SIZE = 5
 # ========================================
 # OPENAGENDA CONFIGURATION
 # ========================================
-OPENAGENDA_REGION = "Lyon"
+OPENAGENDA_REGION = "Lille"
 OPENAGENDA_MAX_EVENTS = 1000
 
 # ========================================

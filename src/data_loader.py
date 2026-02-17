@@ -19,13 +19,14 @@ AGENDA_UID = 57621068  # Ville de Lille
 BASE_URL = "https://api.openagenda.com/v2"
 
 def get_date_range():
-    """Retourne les dates pour filtrer les événements (moins d'un an)"""
+    """Retourne les dates pour filtrer les événements (aujourd'hui + 1 an)"""
     today = datetime.now()
-    one_year_ago = today - timedelta(days=365)
+    one_year_later = today + timedelta(days=365)
     return (
-        one_year_ago.strftime("%Y-%m-%d"),
-        today.strftime("%Y-%m-%d")
+        today.strftime("%Y-%m-%d"),
+        one_year_later.strftime("%Y-%m-%d")
     )
+    
 
 def fetch_events(size=100, after=None):
     """
