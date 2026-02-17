@@ -92,8 +92,8 @@ with st.sidebar:
     st.divider()
 
     st.markdown("**📊 Base de données**")
-    st.markdown("- 951 événements de Lille")
-    st.markdown("- Période : Feb 2025 - Feb 2026")
+    st.markdown("- 545 événements de Lille")
+    st.markdown("- Période : Feb 2026 - Feb 2027")
 
     st.divider()
 
