@@ -1,0 +1,24 @@
+# Environnement virtuel
+venv/
+env/
+.venv/
+
+# Variables d'environnement (API keys sensibles)
+.env
+
+# Données (peuvent être volumineuses)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Base vectorielle Faiss (peut être régénérée)
+vector_store/faiss_index/*
+!vector_store/faiss_index/.gitkeep
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# J

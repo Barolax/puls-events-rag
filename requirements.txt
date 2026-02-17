@@ -1,0 +1,18 @@
+# Dependences 
+langchain==0.3.0
+langchain-mistralai==0.2.0
+faiss-cpu==1.9.0
+python-dotenv==1.0.0
+
+# Data manip 
+pandas==2.1.4
+requests==2.31.0
+
+# Web interface
+streamlit==1.29.0
+
+# Testing 
+pytest==7.4.3
+
+# Outils 
+tqdm==4.66.1
