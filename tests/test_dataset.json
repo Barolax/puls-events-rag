@@ -1,0 +1,164 @@
+{
+  "description": "Jeu de données test pour évaluer le chatbot Puls-Events",
+  "created_date": "2026-02-17",
+  "total_questions": 15,
+  "test_cases": [
+    {
+      "id": 1,
+      "category": "Recherche générale",
+      "question": "Quels concerts ont lieu à Lille ?",
+      "expected_answer_contains": [
+        "concert",
+        "Lille",
+        "date",
+        "lieu"
+      ],
+      "notes": "Le bot doit lister au moins 2-3 concerts avec dates et lieux"
+    },
+    {
+      "id": 2,
+      "category": "Recherche spécifique - Genre",
+      "question": "Y a-t-il des concerts de jazz ?",
+      "expected_answer_contains": [
+        "jazz",
+        "concert",
+        "date"
+      ],
+      "notes": "Le bot doit identifier les concerts de jazz dans la base"
+    },
+    {
+      "id": 3,
+      "category": "Recherche par critère - Gratuit",
+      "question": "Quelles expositions gratuites puis-je voir ?",
+      "expected_answer_contains": [
+        "gratuit",
+        "exposition",
+        "libre"
+      ],
+      "notes": "Le bot doit filtrer les événements gratuits"
+    },
+    {
+      "id": 4,
+      "category": "Recherche temporelle",
+      "question": "Qu'est-ce qui se passe ce weekend ?",
+      "expected_answer_contains": [
+        "weekend",
+        "événement",
+        "samedi|dimanche"
+      ],
+      "notes": "Le bot doit comprendre 'ce weekend' et trouver des événements pertinents"
+    },
+    {
+      "id": 5,
+      "category": "Recherche par public",
+      "question": "Y a-t-il des activités pour enfants ?",
+      "expected_answer_contains": [
+        "enfant",
+        "famille",
+        "jeune"
+      ],
+      "notes": "Le bot doit identifier les événements adaptés aux enfants"
+    },
+    {
+      "id": 6,
+      "category": "Mémoire conversationnelle - Suite",
+      "question": "Trouve-moi un concert de rock",
+      "follow_up": "C'est à quelle heure ?",
+      "expected_answer_contains": [
+        "heure",
+        "horaire",
+        "h"
+      ],
+      "notes": "Le bot doit se souvenir du concert mentionné et donner l'horaire"
+    },
+    {
+      "id": 7,
+      "category": "Mémoire conversationnelle - Précision",
+      "question": "Y a-t-il des expositions de peinture ?",
+      "follow_up": "C'est gratuit ?",
+      "expected_answer_contains": [
+        "gratuit|payant|tarif"
+      ],
+      "notes": "Le bot doit se souvenir de l'exposition et donner le tarif"
+    },
+    {
+      "id": 8,
+      "category": "Recherche par lieu spécifique",
+      "question": "Quels événements ont lieu au Théâtre Sébastopol ?",
+      "expected_answer_contains": [
+        "Sébastopol",
+        "événement",
+        "spectacle|théâtre"
+      ],
+      "notes": "Le bot doit filtrer par lieu"
+    },
+    {
+      "id": 9,
+      "category": "Information manquante",
+      "question": "Où puis-je voir un concert de reggae ?",
+      "expected_answer_contains": [
+        "pas|aucun|trouve pas|disponible"
+      ],
+      "notes": "Le bot doit honnêtement dire s'il ne trouve pas (si pas de reggae dans la base)"
+    },
+    {
+      "id": 10,
+      "category": "Recherche combinée",
+      "question": "Je cherche un spectacle pour enfants gratuit ce weekend",
+      "expected_answer_contains": [
+        "enfant",
+        "gratuit",
+        "spectacle"
+      ],
+      "notes": "Le bot doit combiner plusieurs critères"
+    },
+    {
+      "id": 11,
+      "category": "Détails pratiques",
+      "question": "Comment réserver pour l'exposition Transfiguration(s) ?",
+      "expected_answer_contains": [
+        "réserv",
+        "lien|site|contact"
+      ],
+      "notes": "Le bot doit donner des infos pratiques ou un lien"
+    },
+    {
+      "id": 12,
+      "category": "Recherche temporelle - Mois",
+      "question": "Quels événements ont lieu en mars ?",
+      "expected_answer_contains": [
+        "mars",
+        "événement"
+      ],
+      "notes": "Le bot doit filtrer par mois"
+    },
+    {
+      "id": 13,
+      "category": "Recherche par type",
+      "question": "Y a-t-il des festivals ?",
+      "expected_answer_contains": [
+        "festival"
+      ],
+      "notes": "Le bot doit identifier les festivals"
+    },
+    {
+      "id": 14,
+      "category": "Question hors contexte",
+      "question": "Quel temps fait-il aujourd'hui ?",
+      "expected_answer_contains": [
+        "événements|culturel|Lille|aide pas|sais pas"
+      ],
+      "notes": "Le bot doit rester dans son domaine (événements culturels)"
+    },
+    {
+      "id": 15,
+      "category": "Mémoire conversationnelle - Changement de sujet",
+      "question": "Parle-moi des concerts de jazz",
+      "follow_up": "Et pour les expositions ?",
+      "expected_answer_contains": [
+        "exposition"
+      ],
+      "notes": "Le bot doit gérer un changement de sujet tout en maintenant la conversation"
+    }
+  ]
+}
