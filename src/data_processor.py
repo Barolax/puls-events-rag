@@ -5,6 +5,8 @@ import json
 import os
 import re
 import sys
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import (
     DATA_RAW_PATH,
@@ -119,34 +121,74 @@ def filter_events(events):
     print(f"✅ {len(filtered)} événements conservés")
     return filtered
 
+def chunk_text(text, metadata, chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP):
+    """
+    Découpe un texte long en chunks avec chevauchement
+    """
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        length_function=len,
+        separators=["\n\n", "\n", ". ", " ", ""]
+    )
+    
+    chunks = text_splitter.split_text(text)
+    
+    # Créer un document pour chaque chunk avec les métadonnées
+    chunked_documents = []
+    for i, chunk in enumerate(chunks):
+        chunked_documents.append({
+            "text": chunk,
+            "metadata": {
+                **metadata,
+                "chunk_index": i,
+                "total_chunks": len(chunks)
+            }
+        })
+    
+    return chunked_documents
+
 def process_events(events):
     """
-    Traite tous les événements et crée les documents pour la vectorisation
+    Traite tous les événements et crée les documents avec chunking
     """
-    documents = []
+    all_documents = []
 
     for event in events:
         # Créer le texte structuré
         text = create_event_text(event)
 
         if text:
-            documents.append({
+            metadata = {
                 "uid": event.get("uid"),
-                "text": text,
-                "metadata": {
-                    "title": event.get("title", ""),
-                    "date_debut": event.get("date_debut", ""),
-                    "date_fin": event.get("date_fin", ""),
-                    "lieu": event.get("lieu", ""),
-                    "adresse": event.get("adresse", ""),
-                    "ville": event.get("ville", "Lille"),
-                    "tarifs": event.get("tarifs", ""),
-                    "url": event.get("url", ""),
-                    "keywords": event.get("keywords", [])
-                }
-            })
+                "title": event.get("title", ""),
+                "date_debut": event.get("date_debut", ""),
+                "date_fin": event.get("date_fin", ""),
+                "lieu": event.get("lieu", ""),
+                "adresse": event.get("adresse", ""),
+                "ville": event.get("ville", "Lille"),
+                "tarifs": event.get("tarifs", ""),
+                "url": event.get("url", ""),
+                "keywords": event.get("keywords", [])
+            }
 
-    return documents
+            # Chunking : découper si le texte est trop long
+            if len(text) > CHUNK_SIZE:
+                chunks = chunk_text(text, metadata)
+                all_documents.extend(chunks)
+                print(f"📄 Événement '{metadata['title'][:50]}...' découpé en {len(chunks)} chunks")
+            else:
+                # Texte court : garder tel quel
+                all_documents.append({
+                    "text": text,
+                    "metadata": {
+                        **metadata,
+                        "chunk_index": 0,
+                        "total_chunks": 1
+                    }
+                })
+
+    return all_documents
 
 def save_processed_events(documents):
     """Sauvegarde les documents traités"""
@@ -156,7 +198,7 @@ def save_processed_events(documents):
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(documents, f, ensure_ascii=False, indent=2)
 
-    print(f"💾 {len(documents)} documents sauvegardés dans {filepath}")
+    print(f"💾 {len(documents)} documents (avec chunks) sauvegardés dans {filepath}")
     return filepath
 
 if __name__ == "__main__":
@@ -166,7 +208,8 @@ if __name__ == "__main__":
     # 2. Filtrer les événements invalides
     events = filter_events(events)
 
-    # 3. Traiter et structurer les données
+    # 3. Traiter et structurer les données avec chunking
+    print("\n🔪 Application du chunking...")
     documents = process_events(events)
 
     # 4. Sauvegarder
@@ -176,3 +219,4 @@ if __name__ == "__main__":
     if documents:
         print("\n📋 Exemple de document traité :")
         print(documents[0]["text"])
+        print(f"\n📊 Métadonnées : chunk {documents[0]['metadata']['chunk_index']+1}/{documents[0]['metadata']['total_chunks']}")
