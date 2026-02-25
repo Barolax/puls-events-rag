@@ -277,15 +277,4 @@ Bot: Je suis spécialisé dans les événements culturels, pas la météo 😊
 └─────────────┘
 ```
 
----
-
-## 📝 Livrables
-
-- ✅ Code source versionné (GitHub)
-- ✅ Tests unitaires (9/9 validés)
-- ✅ Évaluation chatbot (93.3%)
-- ✅ Documentation technique (README)
-- ✅ Interface Streamlit fonctionnelle
-- ✅ Jeu de données test annoté
-
 
